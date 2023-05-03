@@ -1,15 +1,34 @@
 import { Box, Button, Center } from "@chakra-ui/react";
 import Menu from "../Menu";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IIMenu } from "../Interface/InterfaceMenu";
 
-function Main() {
+function Main(props: any) {
+  // const { onAdd, menu } = props;
+  const [menu, setMenu] = useState([]);
+
+
+    useEffect(() => {
+      // declare the data fetching function
+      const fetchData = async () => {
+        await fetch("http://localhost:3003/foods/")
+          .then((res) => res.json())
+          .then((data) => setMenu(data));
+      };
+
+      //    let fetchDa: IIMenu[] = [fetchData];
+      // call the function
+      fetchData()
+        // make sure to catch any error
+        .catch(console.error);
+    }, []);
+
   function addFood() {
     return (
       <Link to={"/foods"}>
         <Center p={15}>
-          <Button colorScheme="blue" >Manage</Button>
+          <Button colorScheme="blue">Management</Button>
         </Center>
       </Link>
     );
@@ -37,11 +56,10 @@ function Main() {
       : console.log("fff");
   }
 
-
   return (
     <>
       {token()}
-      <Menu />
+      <Menu  menu={menu} />
     </>
   );
 }

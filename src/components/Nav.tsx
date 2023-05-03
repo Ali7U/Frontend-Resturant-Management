@@ -17,11 +17,11 @@ import { AiOutlineMenu } from "react-icons/ai";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function App() {
+export default function App(props: any) {
+  const { countCart } = props;
   const bg = useColorModeValue("white", "gray.800");
   const mobileNav = useDisclosure();
 
-  let getToken = localStorage.getItem("token");
 
   return (
     <React.Fragment>
@@ -57,8 +57,11 @@ export default function App() {
                 <Button variant="ghost">Home</Button>
               </Link>
               <Link to={"/cart"}>
-                <Button variant="ghost">Cart</Button>
+                <Button variant="ghost">
+                  Cart {countCart ? "| " + countCart : ""}
+                </Button>
               </Link>
+              {/* {countCart ? <Button className="btn">{countCart}</Button> : ""} */}
               <Button variant="ghost">Blog</Button>
               <Button variant="ghost">Company</Button>
               {/* {tokenData.role === "ADMIN" ? <Button bg={"red"}>Hello</Button>: ''} */}
