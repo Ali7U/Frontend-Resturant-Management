@@ -11,38 +11,46 @@ import { IIMenu } from "./Interface/InterfaceMenu";
 import Cart from "./pages/Cart";
 import Product from "./Product";
 
-
 function Menu(props: any) {
   const { menu } = props;
+  const [cartItem, setCartItem] = useState<IIMenu[]>([]);
 
-  const cartFromLocalStorage = localStorage.getItem("Cart")|| "[]";
-  
-  const [cartItem, setCartItem] = useState(cartFromLocalStorage);
-
-  const cartLocal = localStorage.setItem("Cart", JSON.stringify(cartItem));
+  // console.log(JSON.parse(localStorage.getItem("Cart")));
 
   useEffect(() => {
-    localStorage.setItem("Cart", JSON.stringify(cartItem));
+    setCartItem(JSON.parse(localStorage.getItem("Cart")) || []);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("Cart", JSON.stringify(cartItem))
   }, [cartItem]);
 
-  const onAdd = (product: IIMenu) => {
-    const exist: any = menu.find((x: IIMenu) => x.id === product.id);
+  const onAdd = (item: IIMenu) => {
+    const exist = cartItem.find((x: IIMenu) => x.id === item.id);
+    // const cartMap =
     if (exist) {
       setCartItem(
-        menu.map((x: IIMenu) =>
-          x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
+        cartItem.map((x: IIMenu) =>
+          x.id === item.id ? { ...exist, qty: (exist.qty || 0) + 1 } : x
         )
       );
 
-      console.log(product);
+      console.log(item);
     } else {
-      setCartItem([...exist, { ...product, qty: 1 }]);
+      setCartItem([...cartItem, { ...item, qty: 1 }]);
     }
+    // localStorage.setItem("Cart", JSON.stringify(cartItem));
   };
+  // localStorage.setItem("Cart", JSON.stringify(cartItem));
 
   // localStorage.setItem("Cart", JSON.stringify(cartItem));
 
-  return <Product menu={menu} onAdd={onAdd} />;
+  return (
+    <>
+      {/* <Cart cartItem={cartItem} onAdd={onAdd}/> */}
+      <Product menu={menu} onAdd={onAdd} />
+    </>
+  );
 }
 
 export default Menu;

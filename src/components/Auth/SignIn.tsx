@@ -8,12 +8,14 @@ import {
   Button,
   Box,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { IIUser } from "../Interface/InterfaceUser";
 import Nav from "../Nav";
 import Main from "../pages/Main";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   // const [signIn, serSignIn] = useState<{}>([{email: "", password:}])
@@ -55,12 +57,12 @@ function SignIn() {
 
       localStorage.setItem("token", data.token);
       <Main
-      role={data.role}
-      id={data.id}
-      username={data.username}
-      email={email}
-      password={password}
-      token={data.token}
+        role={data.role}
+        id={data.id}
+        username={data.username}
+        email={email}
+        password={password}
+        token={data.token}
       />;
       navigate("/");
     } catch (error) {
@@ -108,6 +110,9 @@ function SignIn() {
             />
           </Box>
           <Button onClick={submitLogin}>Log IN</Button>
+          <Link to={"/signup"}>
+            <Text>Don't have account ?</Text>
+          </Link>
         </SimpleGrid>
       </FormControl>
     </Center>
