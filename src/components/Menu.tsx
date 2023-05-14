@@ -18,11 +18,11 @@ function Menu(props: any) {
   // console.log(JSON.parse(localStorage.getItem("Cart")));
 
   useEffect(() => {
-    setCartItem(JSON.parse(localStorage.getItem("Cart")) || []);
+    setCartItem(JSON.parse(localStorage.getItem("Cart") as string) || []);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("Cart", JSON.stringify(cartItem))
+    localStorage.setItem("Cart", JSON.stringify(cartItem));
   }, [cartItem]);
 
   const onAdd = (item: IIMenu) => {
@@ -47,7 +47,6 @@ function Menu(props: any) {
 
   return (
     <>
-      {/* <Cart cartItem={cartItem} onAdd={onAdd}/> */}
       <Product menu={menu} onAdd={onAdd} />
     </>
   );

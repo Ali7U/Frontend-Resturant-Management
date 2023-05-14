@@ -16,12 +16,12 @@ import {
 import { AiOutlineMenu } from "react-icons/ai";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { GiFullPizza } from "react-icons/gi";
 
 export default function App(props: any) {
   const { countCart } = props;
   const bg = useColorModeValue("white", "gray.800");
   const mobileNav = useDisclosure();
-
 
   return (
     <React.Fragment>
@@ -43,7 +43,7 @@ export default function App(props: any) {
               <VisuallyHidden>Choc</VisuallyHidden>
             </chakra.a>
             <chakra.h1 fontSize="xl" fontWeight="medium" ml="2">
-              Choc
+              <GiFullPizza fontSize={45} color="#ff5500" />
             </chakra.h1>
           </Flex>
           <HStack display="flex" alignItems="center" spacing={1}>
@@ -62,8 +62,7 @@ export default function App(props: any) {
                 </Button>
               </Link>
               {/* {countCart ? <Button className="btn">{countCart}</Button> : ""} */}
-              <Button variant="ghost">Blog</Button>
-              <Button variant="ghost">Company</Button>
+            
               {/* {tokenData.role === "ADMIN" ? <Button bg={"red"}>Hello</Button>: ''} */}
               <Link to="/signin">
                 <Button variant="ghost">Sign In</Button>

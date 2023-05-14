@@ -26,7 +26,7 @@ function Main(props: any) {
 
   function addFood() {
     return (
-      <Link to={"/foods"}>
+      <Link to={"/management"}>
         <Center p={15}>
           <Button colorScheme="blue">Management</Button>
         </Center>
@@ -51,7 +51,7 @@ function Main(props: any) {
   }
 
   function token() {
-    return parseJwt(localStorage.getItem("token")).role === "ADMIN"
+    return parseJwt(localStorage.getItem("token") as string).role === "ADMIN"
       ? addFood()
       : console.log("fff");
   }

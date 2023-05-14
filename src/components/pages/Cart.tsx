@@ -13,7 +13,7 @@ import { IIMenu } from "../Interface/InterfaceMenu";
 import CartManagement from "../CartManagement";
 
 function Cart(props: any) {
-  const { product, onAdd } = props;
+  const { product } = props;
 
   // const [postData, setPostData] = useState<IIMenu[]>([]);
   const [submitted, setSubmitted] = useState(false);
@@ -33,34 +33,68 @@ function Cart(props: any) {
 
   const handleSubmit = async () => {
     try {
-      console.log("item: ", JSON.stringify(cartItems[0]));
+      cartItems.forEach((item: IIMenu) => {
+        console.log("item: ", JSON.stringify(item));
 
-      const addData = {
-        foodName: cartItems[0].foodName,
-        price: cartItems[0].price,
-        qty: cartItems[0].qty,
-        total: totalPrice,
-      };
+        const addData = {
+          foodName: item.foodName,
+          price: item.price,
+          qty: item.qty,
+          total: totalPrice,
+        };
 
-      console.log("item: ", JSON.stringify(addData));
-
-      await fetch("http://localhost:3003/order/newOrder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify(addData),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((e) => console.log(`There is an error ${e}`));
+        console.log("item: ", JSON.stringify(addData));
+        fetch("http://localhost:3003/order/newOrder", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(addData),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((e) => console.log(`There is an error ${e}`));
+      });
 
       setSubmitted(true);
+      setCartItems([]);
+      localStorage.setItem("Cart", '[]');
+      console.log(cartItems.length);
 
       // setPostData(addData);
     } catch (e) {
       console.log(`there is an error ${e}`);
+    }
+  };
+
+  const onAdd = (item: IIMenu) => {
+    const exist = cartItems.find((x: IIMenu) => x.id === item.id);
+    // const cartMap =
+    if (exist) {
+      setCartItems(
+        cartItems.map((x: IIMenu) =>
+          x.id === item.id ? { ...exist, qty: (exist.qty || 0) + 1 } : x
+        )
+      );
+
+      console.log(item);
+    } else {
+      setCartItems([...cartItems, { ...item, qty: 1 }]);
+    }
+    // localStorage.setItem("Cart", JSON.stringify(cartItem));
+  };
+
+  const onRemove = (item: IIMenu) => {
+    const exist = cartItems.find((x: IIMenu) => x.id === item.id);
+    if (exist.qty === 1) {
+      setCartItems(cartItems.filter((x: IIMenu) => x.id !== item.id));
+    } else {
+      setCartItems(
+        cartItems.map((x: IIMenu) =>
+          x.id === item.id ? { ...exist, qty: exist.qty - 1 } : x
+        )
+      );
     }
   };
   return (
@@ -72,21 +106,25 @@ function Cart(props: any) {
         p={15}
         mt={10}
         borderRadius={15}
+        width={600}
       >
         {cartItems.length === 0 && <Box>cart is empty</Box>}
 
         {cartItems.map((item: IIMenu) => (
           <>
-            <SimpleGrid columns={4} w={500}>
+            <SimpleGrid columns={5} w={500}>
               <Text key={item.id}>{item.foodName}</Text>
-              {/* <Button w={50} onClick={() => {
-                rerender()
-                onAdd(item);
-              }}>
-                +
-              </Button> */}
+              <Button
+                w={20}
+                onClick={() => {
+                  // rerender()
+                  onRemove(item);
+                }}
+              >
+                -
+              </Button>
               <Text>{item.qty}</Text>
-              <Button w={50} onClick={() => onAdd(item)}>
+              <Button w={70} onClick={() => onAdd(item)}>
                 +
               </Button>
               <Text>{item.price.toFixed(2)}</Text>

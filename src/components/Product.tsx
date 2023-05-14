@@ -1,10 +1,19 @@
-import { SimpleGrid, Heading, Button, Text, Image, Box } from '@chakra-ui/react';
-import React from 'react'
-import { IIMenu } from './Interface/InterfaceMenu';
+import {
+  SimpleGrid,
+  Heading,
+  Button,
+  Text,
+  Image,
+  Box,
+  Center,
+} from "@chakra-ui/react";
+import React from "react";
+import { IIMenu } from "./Interface/InterfaceMenu";
 
-function Product(props:any) {
-    const {menu, onAdd} = props
-    
+
+function Product(props: any) {
+  const { menu, onAdd } = props;
+
   return (
     <SimpleGrid
       p={"15"}
@@ -20,7 +29,15 @@ function Product(props:any) {
       {/* <Wrap> */}
 
       {menu.map((item: IIMenu) => (
-        <Box borderRadius={10} key={item.id} bg={"#eee"} height="220px" w={250}>
+        <Box
+          borderRadius={10}
+          key={item.id}
+          bg={"#ddd8"}
+          height="220px"
+          w={250}
+          h={250}
+          boxShadow={"0 0 7px "}
+        >
           <Image
             src={item.img}
             w={"100%"}
@@ -30,10 +47,16 @@ function Product(props:any) {
           <Heading as={"h2"} size={"md"} textAlign={"center"}>
             {item.foodName}
           </Heading>
-          <Text>{item.price}</Text>
-          <Button colorScheme="blue" fontSize={12} onClick={() => onAdd(item)}>
-            Add to cart
-          </Button>
+          <Text>{item.price} SAR</Text>
+          <Center>
+            <Button
+              colorScheme="blue"
+              fontSize={12}
+              onClick={() => onAdd(item)}
+            >
+              Add to cart
+            </Button>
+          </Center>
         </Box>
       ))}
       {/* </Wrap> */}
@@ -41,4 +64,4 @@ function Product(props:any) {
   );
 }
 
-export default Product
+export default Product;
